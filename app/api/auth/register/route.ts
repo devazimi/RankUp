@@ -1,34 +1,33 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
-// import { z } from "zod";
-// import { stat } from "fs";
+import { z } from "zod";
 
-// const registerSchema = z.object({
-//   username: z.string().min(4, "username must be at least 4 characters"),
-//   email: z.string().email("invalid email format"),
-//   password: z.string().min(6, "password must be at least 6 characters"),
-// });
+const registerSchema = z.object({
+  username: z.string().min(4, "username must be at least 4 characters"),
+  email: z.string().email("invalid email format"),
+  password: z.string().min(6, "password must be at least 6 characters"),
+});
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { username, email, password } = body;
+    const parsed = registerSchema.safeParse(body);
 
-    if (!username || !email || !password) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { message: "All fields are required @register/POST" },
+        { error: parsed.error.format() },
         { status: 400 },
       );
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const { username, email, password } = parsed.data;
 
-    if (existingUser) {
+    if (!username || !email || !password) {
       return NextResponse.json(
-        { message: "user with this email is already exist @register/POST" },
-        { status: 500 },
+        { message: "all fields required @register/POST" },
+        { status: 400 },
       );
     }
 
@@ -43,15 +42,63 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { id: user.id, email: user.email, username: user.username },
+      {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
       { status: 201 },
     );
-  } catch (error) {
+  } catch (err) {
     return NextResponse.json(
-      { error: "falid to register user @register/POST" },
+      { error: "signUp failed @register/catch" },
       { status: 500 },
     );
   }
+
+}
+
+  // try {
+  //   const body = await req.json();
+
+  //   const { username, email, password } = body;
+
+  //   if (!username || !email || !password) {
+  //     return NextResponse.json(
+  //       { message: "All fields are required @register/POST" },
+  //       { status: 400 },
+  //     );
+  //   }
+
+  //   const existingUser = await prisma.user.findUnique({ where: { email } });
+
+  //   if (existingUser) {
+  //     return NextResponse.json(
+  //       { message: "user with this email is already exist @register/POST" },
+  //       { status: 500 },
+  //     );
+  //   }
+
+  //   const hashedPassword = await bcrypt.hash(password, 10);
+
+  //   const user = await prisma.user.create({
+  //     data: {
+  //       username,
+  //       email,
+  //       password: hashedPassword,
+  //     },
+  //   });
+
+  //   return NextResponse.json(
+  //     { id: user.id, email: user.email, username: user.username },
+  //     { status: 201 },
+  //   );
+  // } catch (error) {
+  //   return NextResponse.json(
+  //     { error: "falid to register user @register/POST" },
+  //     { status: 500 },
+  //   );
+  // }
 
   // try {
   //   const body = await req.json();
@@ -106,4 +153,4 @@ export async function POST(req: Request) {
   //     { status: 500 },
   //   );
   // }
-}
+
