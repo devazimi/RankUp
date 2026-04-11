@@ -18,7 +18,7 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RegisterPage() {
+export default function RegisterPage()  {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [errors, setErrors] = useState<any>({});
   const [username, setUsername] = useState<string>("");
@@ -137,7 +137,7 @@ export default function RegisterPage() {
           error={!!getError("confirmPassword")}
           helperText={getError("confirmPassword")}
         />
-        {errors._errors && errors._errors._errors && (
+        {errors && errors._errors && errors._errors._errors && (
           <Typography color="error" sx={{ mt: 2 }}>
             {errors._errors._errors[0]}
           </Typography>
