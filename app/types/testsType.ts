@@ -13,6 +13,8 @@ export interface Question {
 }
 
 export default interface Test {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    duration: any;
     id: string,
     title: string,
     description: string,

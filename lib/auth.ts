@@ -1,4 +1,4 @@
-import { AuthOptions } from "next-auth";
+import { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
 import bcrypt from "bcrypt";
@@ -46,7 +46,21 @@ export const authOptions: AuthOptions = {
     }),
   ],
 
-  //  i have to add something here later
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.email) {
+        session.user.email = token.email as string;
+      }
+      return session;
+    },
+  },
 
   secret: process.env.NEXTAUTH_SECRET,
 };
