@@ -1,0 +1,156 @@
+[
+  {
+    "id": "js-arrays-001",
+    "title": "JavaScript Array Methods",
+    "description": "Test your knowledge of common JavaScript array manipulation methods.",
+    "difficulty": "medium",
+    "questions": [
+      {
+        "id": "jsa-q1",
+        "testId": "js-arrays-001",
+        "questionText": "Which method sorts the elements of an array in place and returns the sorted array?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "opt1", "text": "slice()" },
+          { "id": "opt2", "text": "splice()" },
+          { "id": "opt3", "text": "sort()" },
+          { "id": "opt4", "text": "map()" }
+        ],
+        "correctAnswer": "opt3"
+      },
+      {
+        "id": "jsa-q2",
+        "testId": "js-arrays-001",
+        "questionText": "The `map()` method creates a new array populated with the results of calling a provided function on every element in the calling array. What does it return?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "optA", "text": "The original array." },
+          { "id": "optB", "text": "A new array with transformed elements." },
+          {
+            "id": "optC",
+            "text": "The first element that satisfies the provided testing function."
+          },
+          {
+            "id": "optD",
+            "text": "An object containing the new array and its length."
+          }
+        ],
+        "correctAnswer": "optB"
+      }
+    ]
+  },
+  {
+    "id": "ts-types-002",
+    "title": "TypeScript Basic Types",
+    "description": "A quick quiz on fundamental TypeScript data types.",
+    "difficulty": "easy",
+    "questions": [
+      {
+        "id": "tst-q1",
+        "testId": "ts-types-002",
+        "questionText": "Which type annotation is used to declare a variable that can hold either a string or a number?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "opt1", "text": "string | number" },
+          { "id": "opt2", "text": "string & number" },
+          { "id": "opt3", "text": "string or number" },
+          { "id": "opt4", "text": "String | Number" }
+        ],
+        "correctAnswer": "opt1"
+      },
+      {
+        "id": "tst-q2",
+        "testId": "ts-types-002",
+        "questionText": "What does the `void` type typically represent in TypeScript function return types?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "optA", "text": "The function can return any type." },
+          {
+            "id": "optB",
+            "text": "The function is guaranteed to return a value."
+          },
+          {
+            "id": "optC",
+            "text": "The function does not return a meaningful value."
+          },
+          {
+            "id": "optD",
+            "text": "The function returns only null or undefined."
+          }
+        ],
+        "correctAnswer": "optC"
+      }
+    ]
+  },
+  {
+    "id": "react-hooks-003",
+    "title": "React Hooks Fundamentals",
+    "description": "Basic questions about React Hooks like useState and useEffect.",
+    "difficulty": "easy",
+    "questions": [
+      {
+        "id": "rh-q1",
+        "testId": "react-hooks-003",
+        "questionText": "Which hook allows you to add state to functional components?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "opt1", "text": "useEffect" },
+          { "id": "opt2", "text": "useContext" },
+          { "id": "opt3", "text": "useReducer" },
+          { "id": "opt4", "text": "useState" }
+        ],
+        "correctAnswer": "opt4"
+      },
+      {
+        "id": "rh-q2",
+        "testId": "react-hooks-003",
+        "questionText": "The dependency array in `useEffect` controls when the effect runs. If the array is empty (`[]`), when does the effect execute?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "optA", "text": "On every re-render." },
+          {
+            "id": "optB",
+            "text": "Only on the initial render (component mount)."
+          },
+          { "id": "optC", "text": "Only when the component unmounts." },
+          { "id": "optD", "text": "It will cause an infinite loop." }
+        ],
+        "correctAnswer": "optB"
+      }
+    ]
+  },
+  {
+    "id": "css-layout-004",
+    "title": "CSS Layout Basics",
+    "description": "Fundamental concepts of CSS for page layout.",
+    "difficulty": "medium",
+    "questions": [
+      {
+        "id": "cssl-q1",
+        "testId": "css-layout-004",
+        "questionText": "Which CSS display value allows an element to behave like a block element at the top-level but inline within its parent?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "opt1", "text": "inline" },
+          { "id": "opt2", "text": "block" },
+          { "id": "opt3", "text": "inline-block" },
+          { "id": "opt4", "text": "flex" }
+        ],
+        "correctAnswer": "opt3"
+      },
+      {
+        "id": "cssl-q2",
+        "testId": "css-layout-004",
+        "questionText": "In Flexbox, what does the `justify-content` property control?",
+        "questionType": "multiple-choice",
+        "options": [
+          { "id": "optA", "text": "Alignment of items on the cross axis." },
+          { "id": "optB", "text": "Alignment of items on the main axis." },
+          { "id": "optC", "text": "The order of flex items." },
+          { "id": "optD", "text": "How flex items wrap onto multiple lines." }
+        ],
+        "correctAnswer": "optB"
+      }
+    ]
+  }
+]

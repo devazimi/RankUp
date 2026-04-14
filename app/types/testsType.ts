@@ -12,10 +12,14 @@ export interface Question {
     correctAnswer: string,
 }
 
-export interface Test {
+export default interface Test {
     id: string,
     title: string,
     description: string,
     difficulty: string,
     questions: Question[],
+}
+
+export interface FakeItem{
+    message: string,
 }
