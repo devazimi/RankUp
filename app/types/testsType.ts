@@ -1,27 +1,29 @@
 export interface Option {
-    id: string,
-    text: string,
+  id: string;
+  text: string;
 }
 
 export interface Question {
-    id: string,
-    testId: string,
-    questionText: string,
-    questionType: string,
-    options: Option[],
-    correctAnswer: string,
+  id: string;
+  testId: string;
+  questionText: string;
+  questionType: string;
+  options: Option[];
+  correctAnswer: string;
 }
 
 export default interface Test {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    duration: any;
-    id: string,
-    title: string,
-    description: string,
-    difficulty: string,
-    questions: Question[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  duration: any;
+  id: string;
+  title: string;
+  description: string;
+  difficulty: string;
+  questions: Question[];
 }
 
-export interface FakeItem{
-    message: string,
-}
+export type Params = {
+  params: Promise<{
+    id: string;
+  }>;
+};

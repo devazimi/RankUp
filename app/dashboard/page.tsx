@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import Test from "../types/testsType";
 import TestsList from "./TestsList";
-import { useSession } from "next-auth/react";
 
 async function getTests() {
   try {
@@ -24,9 +23,6 @@ async function getTests() {
 
 export default async function DashboardPage() {
   const initialTests: Test[] | undefined = await getTests();
-  console.log("Tests data:", initialTests);
-
-  // const {data: session, status} = useSession();
 
   return (
     <Box
