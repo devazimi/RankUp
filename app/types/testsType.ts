@@ -27,3 +27,14 @@ export type Params = {
     id: string;
   }>;
 };
+
+export type TestProps = {
+  test: Test;
+};
+
+export interface SelectedAnswers {
+  questionId: string;
+  optionId: string;
+  text: string;
+  point: number
+}

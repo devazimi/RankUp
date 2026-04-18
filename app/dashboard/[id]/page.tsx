@@ -1,6 +1,7 @@
 import Test, { Params, Question } from "@/app/types/testsType";
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
+import TestPlay from "./TestPlay";
 
 export default async function TestPage({ params }: Params) {
   const { id } = await params;
@@ -21,10 +22,7 @@ export default async function TestPage({ params }: Params) {
 
   return (
   <Box component={'section'} sx={{minWidth: '100%', minHeight: '100vh'}}>
-    <Stack>
-
-    {test?.title}
-    </Stack>
+    <TestPlay test={test} />    
   </Box>
   );
 }
