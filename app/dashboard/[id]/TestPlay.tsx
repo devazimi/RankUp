@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import {
@@ -23,11 +23,11 @@ export default function TestPlay({ test }: TestProps) {
     const currentQuestion = test.questions.find((q) => q.id === questionId);
     const isCorrect = currentQuestion?.correctAnswer === optionId;
 
-    if (isCorrect) {
-      console.log("currect");
-    } else {
-      console.log("not correct");
-    }
+    // if (isCorrect) {
+    //   console.log("currect");
+    // } else {
+    //   console.log("not correct");
+    // }
 
     setSelectedAnswers((prev) => {
       const existingAnswerIndex = prev.findIndex(
@@ -52,6 +52,28 @@ export default function TestPlay({ test }: TestProps) {
     });
   };
 
+  const saveTestResult = async() => {
+    const totalScore = selectedAnswers.reduce((sum, answer) => sum + answer.point, 0);
+
+    try{
+      const res = await fetch('/api/testResults', {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({testId: test.id, score: totalScore, totalQuestions: selectedAnswers.length, answers: {selectedAnswers}})
+      });
+
+      if(!res){
+        throw new Error('no test result');
+      }
+
+      const testResult = await res.json();
+
+      return testResult;
+    }catch(err){
+      console.error('failed posting test result: ',err);
+    }
+  }
+
   const handleFinishTest = () => {
     console.log("test finished");
     // const points = selectedAnswers.filter((p)=> p.point === 1);
@@ -61,9 +83,13 @@ export default function TestPlay({ test }: TestProps) {
       0,
     );
     console.log(`points ${totalScore} of ${test.questions.length}`);
+    saveTestResult();
+
   };
 
-  console.log("selected answers: ", selectedAnswers);
+  
+
+  // console.log("selected answers: ", selectedAnswers);
 
   return (
     <>

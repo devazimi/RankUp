@@ -36,12 +36,14 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log('Test Result in route: ', testResult)
+
     return NextResponse.json(
       { message: "test result added successfuly", result: testResult },
       { status: 201 },
     );
   } catch (err) {
-    console.error('error saving test result: ', err);
+    console.error("error saving test result: ", err);
     return NextResponse.json(
       { error: "adding test result failed !", err },
       { status: 500 },

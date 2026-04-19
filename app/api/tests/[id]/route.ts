@@ -19,7 +19,7 @@ export async function GET(_: Request, { params }: Params) {
       return NextResponse.json({ error: "test not found" }, { status: 404 });
     }
 
-    console.log("Test: ", test);
+    // console.log("Test: ", test);
 
     return NextResponse.json(test);
   } catch (err) {

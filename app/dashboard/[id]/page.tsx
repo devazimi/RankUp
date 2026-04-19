@@ -1,6 +1,5 @@
 import Test, { Params, Question } from "@/app/types/testsType";
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
 import TestPlay from "./TestPlay";
 
 export default async function TestPage({ params }: Params) {

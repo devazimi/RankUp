@@ -7,7 +7,7 @@ export async function GET() {
     const filePath = path.join(process.cwd(), "tests.json");
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const data = JSON.parse(fileContent);
-    console.log("data in route: ", data);
+    // console.log("data in route: ", data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error in route api: ", error);
