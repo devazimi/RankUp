@@ -2,6 +2,27 @@ import { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
 import bcrypt from "bcrypt";
+import "next-auth";
+
+
+// فایل types/next-auth.d.ts رو بساز
+import "next-auth";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      username?: string;
+    };
+  }
+
+  interface User {
+    id: string;
+    email: string;
+    username?: string;
+  }
+}
 
 export const authOptions: AuthOptions = {
   session: {
@@ -58,9 +79,12 @@ export const authOptions: AuthOptions = {
       if (session.user && token.email) {
         session.user.email = token.email as string;
       }
+      if(session?.user){
+        session.user.id = token.id as string;
+      } 
       return session;
     },
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-};
+}

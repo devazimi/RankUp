@@ -60,6 +60,10 @@ export default function TestsList({ initialTests }: initialTestsProp) {
     }
   };
 
+  // const session = await getServerSession(authOptions)
+
+  // getTestResult(session?.user?.id)
+
   const testid = tests?.map((t) => t.id);
   console.log("TEST: ", testid);
 
@@ -143,6 +147,9 @@ export default function TestsList({ initialTests }: initialTestsProp) {
                     >
                       {test.description}
                     </Typography>
+
+                    {/*  */}
+                    {/* <Typography>{session.user.}</Typography> */}
 
                     <Stack
                       direction="row"

@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log('Test Result in route: ', testResult)
+    console.log("Test Result in route: ", testResult);
 
     return NextResponse.json(
       { message: "test result added successfuly", result: testResult },
