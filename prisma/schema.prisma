@@ -30,7 +30,11 @@ model TestResult {
   score           Int
   totalQuestions  Int
   answers         String
+  attemptNumber   Int      @default(1)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  @@unique([userId, testId, attemptNumber])
+  @@index([userId, testId])
 }
 

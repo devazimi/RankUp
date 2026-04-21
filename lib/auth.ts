@@ -4,7 +4,6 @@ import { prisma } from "./prisma";
 import bcrypt from "bcrypt";
 import "next-auth";
 
-
 // فایل types/next-auth.d.ts رو بساز
 import "next-auth";
 
@@ -15,6 +14,7 @@ declare module "next-auth" {
       email: string;
       username?: string;
     };
+    sessionToken?: string;
   }
 
   interface User {
@@ -76,15 +76,16 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      session.sessionToken = token.sessionToken as string;
       if (session.user && token.email) {
         session.user.email = token.email as string;
       }
-      if(session?.user){
+      if (session?.user) {
         session.user.id = token.id as string;
-      } 
+      }
       return session;
     },
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-}
+};

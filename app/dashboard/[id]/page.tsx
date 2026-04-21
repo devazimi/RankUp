@@ -3,32 +3,34 @@ import { Box, Stack, Typography } from "@mui/material";
 import TestPlay from "./TestPlay";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
-async function getTestResult(userId: string) {
+// async function getTestResult(userId: string) {
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/testResults/${userId}`, {
-      method: "GET",
-    })
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/testResults/${userId}`, {
+//       method: "GET",
+//     })
 
-    if(!res.ok){
-      console.log('cannot fetch data');
-      return null;
-    }
+//     if(!res.ok){
+//       console.log('cannot fetch data');
+//       return null;
+//     }
 
-    const testResult = await res.json();
+//     const testResult = await res.json();
 
-    return testResult;
-}
+//     return testResult;
+// }
 
 export default async function TestPage({ params }: Params) {
-  const { id } = await params;
+  const { id: testId } = await params;
 
-  console.log("testID: ", id);
+  console.log("testID: ", testId);
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/tests/${id}`,
-    { cache: "no-store" },
-  );
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const res = await fetch(`${baseUrl}/api/tests/${testId}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     console.log("error fetching test");
@@ -41,18 +43,46 @@ export default async function TestPage({ params }: Params) {
 
   const userId = session?.user?.id;
 
-  if(!userId){
-    return console.log('no user')
+  if (!userId) {
+    return <>log in please</>;
   }
 
-  const testResult = await getTestResult(userId)
+  const previousResults = await prisma.testResult.findMany({
+    where: {userId: userId, testId: testId}
+  });
 
-  console.log('testResult of user : ', testResult);
+  console.log('previous results: ', previousResults)
 
+  // let userTestResult;
+
+  // try {
+  //   const resultRes = await fetch(
+  //     `${baseUrl}/api/testResults?testId=${testId}`,
+  //     {
+  //       headers: {
+  //         Cookie: `next-auth.session-token=${session?.sessionToken || ""}`,
+  //       },
+  //     },
+  //   );
+
+  //   if (resultRes.ok) {
+  //     const data = await resultRes.json();
+
+  //     // previousAttempts = data.stats?.totalAttemts || 0;
+  //     userTestResult = data;
+  //   }
+  // } catch (err) {
+  //   console.error("error getting test results: ", err);
+  // }
+
+  // console.log(`user test result attempts: ${userTestResult}`);
+  // const testResult = await getTestResult(userId)
+
+  // console.log('testResult of user : ', testResult);
 
   return (
-  <Box component={'section'} sx={{minWidth: '100%', minHeight: '100vh'}}>
-    <TestPlay test={test} />    
-  </Box>
+    <Box component={"section"} sx={{ minWidth: "100%", minHeight: "100vh" }}>
+      <TestPlay test={test} />
+    </Box>
   );
 }
