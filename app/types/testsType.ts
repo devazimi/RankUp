@@ -36,5 +36,18 @@ export interface SelectedAnswers {
   questionId: string;
   optionId: string;
   text: string;
-  point: number
+  point: number;
+}
+
+export interface OptionButtonProps {
+  option: Option;
+  question: Question;
+  isSelected: boolean;
+  isCorrect: boolean | null;
+  disabled: boolean;
+  onSelect: (questionId: string, optionId: string, text: string) => void;
+}
+
+export interface TestHeaderProps{
+  test: Test;
 }

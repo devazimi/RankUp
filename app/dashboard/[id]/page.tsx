@@ -1,6 +1,6 @@
 import Test, { Params, Question } from "@/app/types/testsType";
 import { Box, Stack, Typography } from "@mui/material";
-import TestPlay from "./TestPlay";
+import TestPlay from "@/components/tests/TestPlay";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";

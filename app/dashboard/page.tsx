@@ -2,6 +2,10 @@ import { Box, Typography } from "@mui/material";
 import Test from "../types/testsType";
 import TestsList from "./TestsList";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
 async function getTests() {
   try {
     const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -23,6 +27,23 @@ async function getTests() {
 
 export default async function DashboardPage() {
   const initialTests: Test[] | undefined = await getTests();
+
+  const session = await getServerSession(authOptions);
+
+  if(!session?.user.id){
+    return <>please login</>
+  }
+
+  const userTestResult = await prisma.testResult.findMany({
+    where: {
+      userId: session.user.id
+    }
+  });
+
+  console.log('user test result: ', userTestResult);
+
+  // const oneTestResult = userTestResult.filter(r => r.testId ===)
+  // const oneTestResult = (testId: string) => {
 
   return (
     <Box
@@ -46,7 +67,7 @@ export default async function DashboardPage() {
       >
         Available Tests
       </Typography>
-      <TestsList initialTests={initialTests} />
+      <TestsList initialTests={initialTests} userResults={userTestResult} />
     </Box>
   );
 }
