@@ -1,152 +1,257 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import z, { string } from "zod";
-
+import z from "zod";
 import { Box, Typography, TextField, Button, Stack } from "@mui/material";
 
 const loginSchema = z.object({
-  email: z.string().email("incorrect email format"),
-  password: z.string().min(6, "invalid password"),
+  email: z.string().email("Please enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type ZodFormattedErrors = z.ZodFormattedError<z.infer<typeof loginSchema>>;
 
-type ErrorState = ZodFormattedErrors | string | null;
-
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const registered = searchParams.get("registered");
   const router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [errors, setErrors] = useState<ErrorState>(null);
-
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [errors, setErrors] = useState<ZodFormattedErrors>({} as ZodFormattedErrors);
+  const [serverError, setServerError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setServerError("");
 
-    const data = { email, password };
-
-    const result = loginSchema.safeParse(data);
+    // Validation
+    const result = loginSchema.safeParse({ email, password });
 
     if (!result.success) {
-      const formattedErrors = result.error.format();
-      setErrors(formattedErrors);
-      console.log(errors);
+      setErrors(result.error.format());
       return;
     }
 
-    console.log("valid data: ", data);
+    setErrors({} as ZodFormattedErrors);
+    setIsLoading(true);
 
-    setErrors(null);
+    try {
+      const fetchResult = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    const fetchResult = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+      if (fetchResult?.error) {
+        setServerError(fetchResult.error);
+        return;
+      }
 
-    if (fetchResult?.error) {
-      setErrors(fetchResult.error);
-      return;
-    }
-
-    if (fetchResult?.ok) {
-      router.push("/");
+      if (fetchResult?.ok) {
+        router.push("/");
+      }
+    } catch (err) {
+      setServerError("Network error. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const getFeildError = (
-    fieldName: "email" | "password",
-  ): string | undefined => {
-    if (
-      typeof errors === "object" &&
-      errors !== null &&
-      !Array.isArray(errors) &&
-      fieldName in errors
-    ) {
-      const zodErrors = errors as ZodFormattedErrors;
-
-      if (zodErrors[fieldName]?._errors?.[0]) {
-        return zodErrors[fieldName]._errors[0];
-      }
+  const getFieldError = (fieldName: "email" | "password"): string | undefined => {
+    if (errors && errors[fieldName]?._errors?.[0]) {
+      return errors[fieldName]._errors[0];
     }
-
     return undefined;
   };
 
-  const hasGeneralError = typeof errors === "string" && errors;
-  //   const getError = (fieldName: string) => {
-  //     return errors?.[fieldName]?._errors?.[0];
-  //   };
-
   return (
     <Box
-      component={"section"}
       sx={{
+        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        margin: "auto",
+        bgcolor: "#f8fafc",
+        px: 2,
       }}
     >
       <Box
-        component="form"
-        onSubmit={handleSubmit}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          //   margin: "auto",
-          gap: 2,
-          padding: 5,
+          width: "100%",
+          maxWidth: 400,
+          bgcolor: "white",
+          borderRadius: 3,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+          border: "1px solid #e2e8f0",
+          p: { xs: 3, sm: 5 },
         }}
       >
-        <Typography
-          variant="h6"
-          fontFamily="inherit"
-          fontWeight={"bold"}
-          color="#6b6b6b"
-        >
-          Login
-        </Typography>
-
-        <TextField
-          sx={{ width: 250 }}
-          value={email}
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-          error={!!getFeildError("email")}
-          helperText={getFeildError("email")}
-        />
-        <TextField
-          sx={{ width: 250 }}
-          value={password}
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-          error={!!getFeildError("password")}
-          helperText={getFeildError("password")}
-        />
-        {hasGeneralError && (
+        {/* Header */}
+        <Box sx={{ mb: 4, textAlign: "center" }}>
           <Typography
-            color="error"
-            variant="body2"
-            sx={{ mt: 1, textAlign: "center" }}
+            variant="h5"
+            sx={{
+              fontWeight: 700,
+              color: "#1e293b",
+              mb: 0.5,
+              fontSize: { xs: 20, sm: 24 },
+            }}
           >
-            {errors}
+            Welcome back
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ color: "#94a3b8", fontSize: 14 }}
+          >
+            Sign in to your account
+          </Typography>
+        </Box>
+
+        {/* Success Message */}
+        {registered === "true" && (
+          <Typography
+            sx={{
+              bgcolor: "#f0fdf4",
+              color: "#166534",
+              border: "1px solid #bbf7d0",
+              borderRadius: 2,
+              py: 1.5,
+              px: 2,
+              mb: 3,
+              fontSize: 14,
+              textAlign: "center",
+            }}
+          >
+            Registration successful! Please sign in.
           </Typography>
         )}
-        <Button type="submit" variant="contained" size="large" sx={{}}>
-          Login
-        </Button>
-        <Stack flexDirection={"row"} sx={{ justifyContent: "flex-end" }}>
-          <Typography variant="body2" fontFamily="inherit">
-            <Link href={"/register"}>Create a new account!</Link>
+
+        {/* Form */}
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
+        >
+          <TextField
+            fullWidth
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) {
+                const newErrors = { ...errors };
+                delete newErrors.email;
+                setErrors(newErrors);
+              }
+            }}
+            error={!!getFieldError("email")}
+            helperText={getFieldError("email")}
+            size="small"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+                fontSize: 14,
+                "&:hover fieldset": {
+                  borderColor: "#4f46e5",
+                },
+              },
+            }}
+          />
+
+          <TextField
+            fullWidth
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (errors.password) {
+                const newErrors = { ...errors };
+                delete newErrors.password;
+                setErrors(newErrors);
+              }
+            }}
+            error={!!getFieldError("password")}
+            helperText={getFieldError("password")}
+            size="small"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+                fontSize: 14,
+                "&:hover fieldset": {
+                  borderColor: "#4f46e5",
+                },
+              },
+            }}
+          />
+
+          {/* Server Error */}
+          {serverError && (
+            <Typography
+              sx={{
+                color: "#ef4444",
+                fontSize: 13,
+                textAlign: "center",
+                bgcolor: "#fef2f2",
+                py: 1.5,
+                borderRadius: 2,
+                border: "1px solid #fee2e2",
+              }}
+            >
+              {serverError}
+            </Typography>
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            disabled={isLoading}
+            variant="contained"
+            sx={{
+              mt: 1,
+              py: 1.5,
+              bgcolor: "#4f46e5",
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              fontSize: 15,
+              boxShadow: "none",
+              "&:hover": {
+                bgcolor: "#4338ca",
+                boxShadow: "none",
+              },
+              "&:disabled": {
+                bgcolor: "#e2e8f0",
+                color: "#94a3b8",
+              },
+            }}
+          >
+            {isLoading ? "Signing in..." : "Sign In"}
+          </Button>
+        </Box>
+
+        {/* Footer */}
+        <Box sx={{ mt: 3, textAlign: "center" }}>
+          <Typography variant="body2" sx={{ color: "#94a3b8", fontSize: 13 }}>
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              style={{
+                color: "#4f46e5",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              Sign up
+            </Link>
           </Typography>
-        </Stack>
+        </Box>
       </Box>
     </Box>
   );
