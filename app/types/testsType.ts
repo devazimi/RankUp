@@ -68,3 +68,12 @@ export interface TestsListProps {
   // initialTests?: Test[] | undefined;
   userResults: userTestResultType[] | undefined;
 }
+
+export interface TestsListCardProps{
+    test: Test;
+    attemptsCount: number;
+    averageScore: string;
+    bestScore: number;
+    lastScore?: number;
+}
+
