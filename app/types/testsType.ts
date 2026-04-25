@@ -51,3 +51,20 @@ export interface OptionButtonProps {
 export interface TestHeaderProps{
   test: Test;
 }
+
+export interface userTestResultType {
+  id?: string;
+  totalQuestions?: number;
+  testId?: string;
+  score?: number;
+  answers?: string;
+  attemptNumber?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  userId?: string;
+}
+
+export interface TestsListProps {
+  // initialTests?: Test[] | undefined;
+  userResults: userTestResultType[] | undefined;
+}

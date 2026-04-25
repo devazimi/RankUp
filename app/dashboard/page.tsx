@@ -26,21 +26,21 @@ async function getTests() {
 }
 
 export default async function DashboardPage() {
-  const initialTests: Test[] | undefined = await getTests();
+  // const initialTests: Test[] | undefined = await getTests();
 
   const session = await getServerSession(authOptions);
 
-  if(!session?.user.id){
-    return <>please login</>
+  if (!session?.user.id) {
+    return <>please login</>;
   }
 
   const userTestResult = await prisma.testResult.findMany({
     where: {
-      userId: session.user.id
-    }
+      userId: session.user.id,
+    },
   });
 
-  console.log('user test result: ', userTestResult);
+  console.log("user test result: ", userTestResult);
 
   // const oneTestResult = userTestResult.filter(r => r.testId ===)
   // const oneTestResult = (testId: string) => {
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
       >
         Available Tests
       </Typography>
-      <TestsList initialTests={initialTests} userResults={userTestResult} />
+      <TestsList userResults={userTestResult} />
     </Box>
   );
 }
