@@ -1,33 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import Test from "../types/testsType";
-import TestsList from "./TestsList";
+import TestsList from "../../components/tests/TestsList";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-async function getTests() {
-  try {
-    const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const response = await fetch(`${baseURL}/api/tests`, { cache: "no-store" });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.error("Error fetching tests: ", error);
-
-    return [];
-  }
-}
-
 export default async function DashboardPage() {
-  // const initialTests: Test[] | undefined = await getTests();
-
   const session = await getServerSession(authOptions);
 
   if (!session?.user.id) {
@@ -41,9 +19,6 @@ export default async function DashboardPage() {
   });
 
   console.log("user test result: ", userTestResult);
-
-  // const oneTestResult = userTestResult.filter(r => r.testId ===)
-  // const oneTestResult = (testId: string) => {
 
   return (
     <Box

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import Test, { TestsListProps, userTestResultType } from "../types/testsType";
+import Test, { TestsListProps, userTestResultType } from "../../app/types/testsType";
 
 import { useRouter } from "next/navigation";
 
