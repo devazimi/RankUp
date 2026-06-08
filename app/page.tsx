@@ -1,10 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Box, Button, Typography } from "@mui/material";
 
 export default function MainPage() {
+  const session = useSession();
+
   const router = useRouter();
+
+  const handleClickButton = () => {
+    if(session?.data?.user.id){
+      router.push('/dashboard');
+    }
+    else{
+      router.push("/login");
+    }
+  }
 
   return (
     <Box
@@ -77,7 +89,7 @@ export default function MainPage() {
 
         {/* CTA Button */}
         <Button
-          onClick={() => router.push("/login")}
+          onClick={() => handleClickButton()}
           variant="contained"
           size="large"
           sx={{

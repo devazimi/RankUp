@@ -90,7 +90,6 @@ export const useTestLogic = (test: TestProps["test"]) => {
       });
 
       setFinished(true);
-
       return testResult;
     } catch (err) {
       console.error("failed posting test result: ", err);

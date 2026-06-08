@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Box, Button, Stack, Typography, Snackbar, Alert } from "@mui/material";
 import { Question, TestProps } from "@/app/types/testsType";
 
@@ -10,6 +11,8 @@ import TestHeader from "./TestHeader";
 
 export default function TestPlay({ test }: TestProps) {
   const { data: session } = useSession();
+
+  const router = useRouter();
 
   const {
     handleSelectedAnswer,
@@ -57,7 +60,11 @@ export default function TestPlay({ test }: TestProps) {
 
           {!finished && (
             <Button
-              onClick={() => handleFinish()}
+              onClick={() => {
+                handleFinish();
+                router.push("/dashboard");
+                router.refresh();
+              }}
               variant="contained"
               sx={{
                 my: 5,
