@@ -1,9 +1,13 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import TestsList from "../../components/tests/TestsList";
 
 import { getServerSession } from "next-auth";
+import { signOut } from "next-auth/react";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+
+import { FaSignOutAlt } from "react-icons/fa";
+import TestsPageHeader from "@/components/tests/TestsPageHeader";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -30,18 +34,7 @@ export default async function DashboardPage() {
         backgroundColor: "#f8f9fa",
       }}
     >
-      <Typography
-        variant="h4"
-        sx={{
-          mb: 4,
-          fontWeight: 700,
-          color: "#2d3748",
-          textAlign: "center",
-          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        }}
-      >
-        Available Tests
-      </Typography>
+      <TestsPageHeader />
       <TestsList userResults={userTestResult} />
     </Box>
   );

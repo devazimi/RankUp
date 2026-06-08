@@ -6,14 +6,11 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export default async function TestPage({ params }: Params) {
-  // await new Promise((resolve) => setTimeout(resolve, 3000));
   const { id: testId } = await params;
 
   console.log("testID: ", testId);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-
 
   const res = await fetch(`${baseUrl}/api/tests/${testId}`, {
     cache: "no-store",

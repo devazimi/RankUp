@@ -27,9 +27,6 @@ export default function TestsList({
 
   const router = useRouter();
 
-  // console.log("session: ", session);
-  // console.log("status: ", status);
-
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
@@ -66,9 +63,6 @@ export default function TestsList({
   if (error) {
     return <ErrorUI setError={setError} retryFetch={fetchTests} />;
   }
-
-  // const testid = tests?.map((t) => t.id);
-  // console.log("TEST: ", testid);
 
   // loading return
   if (isLoading || status === "loading") {
