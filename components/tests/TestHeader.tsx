@@ -4,9 +4,12 @@ import { Stack, Typography } from "@mui/material";
 export default function TestHeader({ test }: TestHeaderProps) {
   return (
     <Stack direction={"column"} sx={{ mb: 10 }}>
-      <Stack direction={"row"}>
+      <Stack direction={"row"} gap={1}>
         <Typography variant="h5" fontFamily={"monospace"} color="#4e72f7">
-          {test.title} |
+          {test.title}
+        </Typography>
+        <Typography variant="h5" color="#9f0a0a">
+          |
         </Typography>
         <Typography variant="h5" fontFamily={"monospace"} color="#9f0a0a">
           {test.difficulty}

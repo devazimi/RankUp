@@ -53,7 +53,7 @@ export default function LoginPage() {
       }
 
       if (fetchResult?.ok) {
-        router.push("/");
+        router.push("/dashboard");
       }
     } catch (err) {
       setServerError("Network error. Please try again.");

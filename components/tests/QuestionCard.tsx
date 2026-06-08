@@ -34,7 +34,7 @@ export default function QuestionCard({
     >
       <CardHeader
         title={
-          <Typography fontSize={18} fontFamily={"monospace"}>
+          <Typography fontSize={18} fontFamily={'monospace'}>
             {question.questionText}
           </Typography>
         }
