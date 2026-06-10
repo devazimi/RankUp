@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import z from "zod";
-import { Box, Typography, TextField, Button, Stack } from "@mui/material";
+import { Box, Typography, TextField, Button } from "@mui/material";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -56,7 +56,8 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (err) {
-      setServerError("Network error. Please try again.");
+      setServerError("Network error. Please try again. ");
+      return err;
     } finally {
       setIsLoading(false);
     }
