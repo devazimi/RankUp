@@ -1,19 +1,18 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import TestsList from "../../components/tests/TestsList";
 
+import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { signOut } from "next-auth/react";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-import { FaSignOutAlt } from "react-icons/fa";
 import TestsPageHeader from "@/components/tests/TestsPageHeader";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user.id) {
-    return <>please login</>;
+    redirect("/login");
   }
 
   const userTestResult = await prisma.testResult.findMany({
@@ -21,8 +20,6 @@ export default async function DashboardPage() {
       userId: session.user.id,
     },
   });
-
-  console.log("user test result: ", userTestResult);
 
   return (
     <Box
