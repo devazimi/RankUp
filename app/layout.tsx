@@ -1,5 +1,11 @@
 import Providers from "./Providers";
 
+export async function generateMetadata(){
+  return{
+    title: 'RankUp',
+  }
+}
+
 export default function RootLayout({
   children,
 }: {
