@@ -49,19 +49,10 @@ export async function POST(req: Request) {
       },
       { status: 201 },
     );
-  } 
-  // catch (err) {
-    // return NextResponse.json(
-      // { error: "signUp failed @register/catch" },
-      // { status: 500 },
-  // );
+  }
   catch (err) {
-    console.error("REGISTER ERROR:", err);
-
     return NextResponse.json(
-      {
-        error: err instanceof Error ? err.message : "unknown error",
-      },
+      { error: "signUp failed @register/catch" },
       { status: 500 },
     );
   }
