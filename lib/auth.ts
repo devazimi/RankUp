@@ -1,10 +1,9 @@
-import { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
+import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import "next-auth";
 
-// فایل types/next-auth.d.ts رو بساز
 import "next-auth";
 
 declare module "next-auth" {
